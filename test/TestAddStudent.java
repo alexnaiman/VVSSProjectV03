@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class TestAddStudent{
 
     @Test
-    public void testAddStudent1() throws ValidatorException {
+    public void testAddStudentValidInput() throws ValidatorException {
 
         StudentValidator vs=new StudentValidator();
         StudentXMLRepo strepo=new StudentXMLRepo(vs,"StudentiXML.xml");
@@ -19,7 +19,7 @@ public class TestAddStudent{
     }
 
     @Test
-    public void testAddStudent2() {
+    public void testAddStudentInvalidGroupInput() {
 
         StudentValidator vs=new StudentValidator();
         StudentXMLRepo strepo=new StudentXMLRepo(vs,"StudentiXML.xml");
