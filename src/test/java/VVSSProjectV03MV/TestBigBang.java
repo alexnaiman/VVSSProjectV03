@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BigBangTest {
+public class TestBigBang {
 
     private TemaLabXMLRepo temaLabXMLRepo;
     private TemaLabXMLService temaLabXMLService;
