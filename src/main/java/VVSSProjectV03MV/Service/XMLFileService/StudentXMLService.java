@@ -1,24 +1,25 @@
 package VVSSProjectV03MV.Service.XMLFileService;
 
 import VVSSProjectV03MV.Domain.Student;
-import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepo;
+import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepository;
 
-public class StudentXMLService extends AbstractXMLService<String,Student>{
-    private StudentXMLRepo xmlrepo;
+public class StudentXMLService extends AbstractXMLService<Integer, Student> {
+    private StudentXMLRepository xmlRepository;
 
-    public StudentXMLService(StudentXMLRepo xmlrepo)  {
-        super(xmlrepo);
+    public StudentXMLService(StudentXMLRepository xmlRepository) {
+        super(xmlRepository);
     }
 
     @Override
-    protected Student extractEntity(String[] params){
-        int grupa=0;
-        try{
-            grupa=Integer.parseInt(params[2]);
-        }catch(NumberFormatException ex){
+    protected Student extractEntity(String[] params) {
+        int group = 0;
+        int id = 0;
+        try {
+            id = Integer.parseInt(params[0]);
+            group = Integer.parseInt(params[2]);
+        } catch (NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }
-        return new Student(params[0],params[1],grupa,params[3],params[4]);
+        return new Student(id, params[1], group, params[3], params[4]);
     }
-
 }

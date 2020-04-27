@@ -6,47 +6,55 @@ import VVSSProjectV03MV.Repository.Repo;
 import VVSSProjectV03MV.Validator.IValidator;
 
 import java.util.*;
-public abstract class AbstractCrudRepo<ID,E extends HasId<ID>> implements Repo<ID,E> {
-    Map<ID,E> entityes;
+
+public abstract class AbstractCrudRepository<ID, E extends HasId<ID>> implements Repo<ID, E> {
+    Map<ID, E> entities;
     IValidator<E> validator;
-    public AbstractCrudRepo(IValidator v){
-        entityes=new HashMap<ID,E>();
+    public AbstractCrudRepository(IValidator v){
+        entities=new HashMap<ID,E>();
         validator=v;
     }
+
     @Override
-    public E findOne(ID id){
-        if (entityes.get(id)==null){
+    public E findOne(ID id) {
+        if (entities.get(id) == null) {
             return null;
-        }else{
-            if(id==null){
+        } else {
+            if (id == null) {
                 throw new IllegalArgumentException();
-            }else{
-                return entityes.get(id);
+            } else {
+                return entities.get(id);
             }
         }
 
     }
 
     @Override
-    public Iterable<E> findAll(){
-        return entityes.values();
+    public Iterable<E> findAll() {
+        return entities.values();
     }
+
     @Override
     public E save(E entity) throws ValidatorException {
-        if(entity==null){
+        if (entity == null) {
             throw new IllegalArgumentException("Entity can not be null!\n");
         }
-        try{
+        try {
             validator.validate(entity);
-            return entityes.putIfAbsent(entity.getId(),entity);
-        }catch(ValidatorException ex){
+            if (entities.containsKey(entity.getId())) {
+                throw new IllegalArgumentException("Entity with this id already exists!\n");
+            }
+            return entities.put(entity.getId(), entity);
+        } catch (ValidatorException ex) {
             throw new ValidatorException(ex.getMessage());
         }
     }
+
     @Override
-    public E delete(ID id){
-        return entityes.remove(id);
+    public E delete(ID id) {
+        return entities.remove(id);
     }
+
     @Override
     public E update(E entity) {
         try {
@@ -54,15 +62,16 @@ public abstract class AbstractCrudRepo<ID,E extends HasId<ID>> implements Repo<I
                 throw new IllegalArgumentException("Entity can not be null!\n");
             } else {
                 validator.validate(entity);
-                return entityes.replace(entity.getId(), entity);
+                return entities.replace(entity.getId(), entity);
             }
-        }catch(ValidatorException e){
+        } catch (ValidatorException e) {
             return null;
         }
     }
+
     //@Override
-    public long size(){
-        return entityes.size();
+    public long size() {
+        return entities.size();
     }
 
 }

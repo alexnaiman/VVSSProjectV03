@@ -3,10 +3,12 @@ package VVSSProjectV03MV.Exceptions;
 
 public class RepositoryException extends RuntimeException {
     String message;
-    public RepositoryException(String message){
-        this.message=message;
+
+    public RepositoryException(String message) {
+        this.message = message;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return this.message;
     }
 }

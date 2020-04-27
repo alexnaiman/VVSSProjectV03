@@ -1,13 +1,9 @@
 package VVSSProjectV03MV;
 
 import VVSSProjectV03MV.Exceptions.ValidatorException;
-import VVSSProjectV03MV.Repository.MemoryRepository.TemaLabRepo;
-import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepo;
-import VVSSProjectV03MV.Repository.XMLFileRepository.TemaLabXMLRepo;
-import VVSSProjectV03MV.Service.XMLFileService.StudentXMLService;
-import VVSSProjectV03MV.Service.XMLFileService.TemaLabXMLService;
-import VVSSProjectV03MV.Validator.StudentValidator;
-import VVSSProjectV03MV.Validator.TemaLabValidator;
+import VVSSProjectV03MV.Repository.XMLFileRepository.AssignmentXMLRepository;
+import VVSSProjectV03MV.Service.XMLFileService.AssignmentXMLService;
+import VVSSProjectV03MV.Validator.AssignmentValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,32 +12,30 @@ import static org.junit.Assert.fail;
 
 public class TestAddAssignment {
 
-    private TemaLabValidator validator;
-    private TemaLabXMLRepo repository;
-    private TemaLabXMLService service;
+    private AssignmentXMLRepository repository;
+    private AssignmentXMLService service;
 
     @Before
     public void setup() {
-        this.validator = new TemaLabValidator();
-        this.repository = new TemaLabXMLRepo(validator, "TemaLaboratorXML.xml");
-        this.service = new TemaLabXMLService(repository);
+        AssignmentValidator validator = new AssignmentValidator();
+        this.repository = new AssignmentXMLRepository(validator, "TemaLaboratorXML.xml");
+        this.service = new AssignmentXMLService(repository);
     }
 
     @Test
     public void testAddAssignmentValidInput() throws ValidatorException {
-
         String[] params = {"6", "description", "8", "6"};
         this.service.add(params);
         assertEquals(this.repository.size(), 1);
     }
 
     @Test
-    public void testAddAssignmentInvalidIdInput() {
-        String[] params = {"x", "homework-description", "3", "2"};
+    public void testAddAssignmentInvalidDescriptionInput()  {
+        String[] params = {"1", "", "3", "2"};
         try {
             this.service.add(params);
             fail("Method didn't throw when it was expected to");
-        } catch (Exception exception) {
+        } catch (ValidatorException exception) {
             System.out.println(exception.getMessage());
         }
     }
@@ -102,22 +96,19 @@ public class TestAddAssignment {
     }
 
     @Test
-    public void testAddAssignment6() {
+    public void testAddAssignment6() throws ValidatorException {
         String[] params = {"1", "description", "8", "6"};
-        try {
-            this.service.add(params);
-//            fail("Method didn't throw when it was expected to");
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
+        this.service.add(params);
+        assertEquals(this.repository.size(), 1);
     }
 
     @Test
     public void testAddAssignment7() {
-        String[] params = {"2", "description", "8", "6"};
+        String[] params = {"1", "description", "8", "6"};
         try {
             this.service.add(params);
-//            fail("Method didn't throw when it was expected to");
+            this.service.add(params);
+            fail("Method didn't throw when it was expected to");
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
@@ -125,28 +116,6 @@ public class TestAddAssignment {
 
     @Test
     public void testAddAssignment8() {
-        String[] params = {"3", "description", "8", "6"};
-        try {
-            this.service.add(params);
-//            fail("Method didn't throw when it was expected to");
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
-
-    @Test
-    public void testAddAssignment9() {
-        String[] params = {"4", "description", "8", "6"};
-        try {
-            this.service.add(params);
-//            fail("Method didn't throw when it was expected to");
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
-
-    @Test
-    public void testAddAssignment10() {
         String[] params = {"5", "description", "0", "2"};
         try {
             this.service.add(params);
@@ -157,7 +126,7 @@ public class TestAddAssignment {
     }
 
     @Test
-    public void testAddAssignment11() {
+    public void testAddAssignment9() {
         String[] params = {"6", "description", "8", "15"};
         try {
             this.service.add(params);
@@ -166,6 +135,4 @@ public class TestAddAssignment {
             System.out.println(exception.getMessage());
         }
     }
-
-
 }

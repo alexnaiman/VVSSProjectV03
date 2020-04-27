@@ -1,52 +1,64 @@
 package VVSSProjectV03MV.Domain;
 
-public class Student implements HasId<String> {
-    private  String id;
-    private  String nume;
-    private int grupa;
+public class Student implements HasId<Integer> {
+    private Integer id;
+    private String name;
+    private int group;
     private String email;
-    private String indrumator;
-    public Student(String id,String nume,int grupa, String email, String indrumator){
-        this.setId(id);
-        this.setNume(nume);
-        this.setGrupa(grupa);
-        this.setEmail(email);
-        this.setIndrumator(indrumator);
+    private String teacher;
+
+    public Student(Integer id, String name, int group, String email, String teacher) {
+        this.id = id;
+        this.name = name;
+        this.group = group;
+        this.email = email;
+        this.teacher = teacher;
     }
+
     @Override
-    public String getId() {
+    public Integer getId() {
         return id;
     }
+
     @Override
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-    public String getNume() {
-        return nume;
+
+    public String getName() {
+        return name;
     }
-    public void setNume(String nume) {
-        this.nume = nume;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public int getGrupa() {
-        return grupa;
+
+    public int getGroup() {
+        return group;
     }
-    public void setGrupa(int grupa) {
-        this.grupa = grupa;
+
+    public void setGroup(int group) {
+        this.group = group;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getIndrumator() {
-        return indrumator;
+
+    public String getTeacher() {
+        return teacher;
     }
-    public void setIndrumator(String indrumator) {
-        this.indrumator = indrumator;
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
+
     @Override
-    public String toString(){
-        return this.id+"#"+this.nume+"#"+this.grupa+"#"+this.email+"#"+this.indrumator;
+    public String toString() {
+        return this.id + "#" + this.name + "#" + this.group + "#" + this.email + "#" + this.teacher;
     }
 }

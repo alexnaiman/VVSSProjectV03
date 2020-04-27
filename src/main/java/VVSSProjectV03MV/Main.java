@@ -1,32 +1,22 @@
 package VVSSProjectV03MV;
 
-import VVSSProjectV03MV.Exceptions.ValidatorException;
-import VVSSProjectV03MV.Repository.XMLFileRepository.NotaXMLRepo;
-import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepo;
-import VVSSProjectV03MV.Repository.XMLFileRepository.TemaLabXMLRepo;
-import VVSSProjectV03MV.Service.XMLFileService.NotaXMLService;
-import VVSSProjectV03MV.Service.XMLFileService.StudentXMLService;
-import VVSSProjectV03MV.Service.XMLFileService.TemaLabXMLService;
+import VVSSProjectV03MV.Repository.XMLFileRepository.*;
+import VVSSProjectV03MV.Service.XMLFileService.*;
 import VVSSProjectV03MV.UI.ui;
-import VVSSProjectV03MV.Validator.NotaValidator;
-import VVSSProjectV03MV.Validator.StudentValidator;
-import VVSSProjectV03MV.Validator.TemaLabValidator;
-
-import java.io.IOException;
+import VVSSProjectV03MV.Validator.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ValidatorException {
-        //System.out.println("Hello World!");
-        StudentValidator vs=new StudentValidator();
-        TemaLabValidator vt=new TemaLabValidator();
-        NotaValidator vn=new NotaValidator();
-        StudentXMLRepo strepo=new StudentXMLRepo(vs,"StudentiXML.xml");
-        TemaLabXMLRepo tmrepo=new TemaLabXMLRepo(vt,"TemaLaboratorXML.xml");
-        NotaXMLRepo ntrepo=new NotaXMLRepo(vn,"NotaXML.xml");
-        StudentXMLService stsrv=new StudentXMLService(strepo);
-        TemaLabXMLService tmsrv=new TemaLabXMLService(tmrepo);
-        NotaXMLService ntsrv=new NotaXMLService(ntrepo);
-        ui ui=new ui(stsrv,tmsrv,ntsrv);
+    public static void main(String[] args) {
+        StudentValidator studentValidator = new StudentValidator();
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        GradeValidator gradeValidator = new GradeValidator();
+        StudentXMLRepository studentXMLRepository = new StudentXMLRepository(studentValidator, "StudentiXML.xml");
+        AssignmentXMLRepository assignmentXMLRepository = new AssignmentXMLRepository(assignmentValidator, "TemaLaboratorXML.xml");
+        GradeXMLRepository gradeXMLRepository = new GradeXMLRepository(gradeValidator, "NotaXML.xml");
+        StudentXMLService studentXMLService = new StudentXMLService(studentXMLRepository);
+        AssignmentXMLService assignmentXMLService = new AssignmentXMLService(assignmentXMLRepository);
+        GradeXMLService gradeXMLService = new GradeXMLService(gradeXMLRepository);
+        ui ui = new ui(studentXMLService, assignmentXMLService, gradeXMLService);
         ui.run();
     }
 }

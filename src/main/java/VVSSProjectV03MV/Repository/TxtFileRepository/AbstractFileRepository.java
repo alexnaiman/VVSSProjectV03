@@ -1,28 +1,35 @@
 package VVSSProjectV03MV.Repository.TxtFileRepository;
 
 import VVSSProjectV03MV.Domain.HasId;
-import VVSSProjectV03MV.Repository.MemoryRepository.AbstractCrudRepo;
+import VVSSProjectV03MV.Repository.MemoryRepository.AbstractCrudRepository;
 import VVSSProjectV03MV.Validator.IValidator;
 import VVSSProjectV03MV.Exceptions.ValidatorException;
 import VVSSProjectV03MV.Exceptions.RepositoryException;
+
 import java.io.IOException;
 import java.io.*;
 
-public abstract class AbstractFileRepository<ID,E extends HasId<ID>> extends AbstractCrudRepo<ID,E> {
+public abstract class AbstractFileRepository<ID, E extends HasId<ID>> extends AbstractCrudRepository<ID, E> {
     private String filename;
 
-    public AbstractFileRepository(IValidator v,String filename) {
+    public AbstractFileRepository(IValidator v, String filename) {
         super(v);
-        this.filename=filename;
-        //readFromFile();
+        this.filename = filename;
     }
 
-    private void writeAll() throws IOException{
+    private void writeAll() throws IOException {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(filename));
-        super.findAll().forEach(x-> { try { out.writeChars(x.toString()); } catch (IOException e) { e.printStackTrace(); } });
+        super.findAll().forEach(x -> {
+            try {
+                out.writeChars(x.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
-    private void writeToFile(E entity)throws IOException {
+
+    private void writeToFile(E entity) throws IOException {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(filename));
         out.writeChars(entity.toString());
     }
@@ -30,16 +37,15 @@ public abstract class AbstractFileRepository<ID,E extends HasId<ID>> extends Abs
     private void readFromFile() throws IOException, ValidatorException {
         DataInputStream in = new DataInputStream(new FileInputStream(filename));
         String line;
-        while((line=in.readUTF())!=null){
-            String[] info=line.split("#");
-            E e=extractEntity(info);
+        while ((line = in.readUTF()) != null) {
+            String[] info = line.split("#");
+            E e = extractEntity(info);
             E saved = super.save(e);
-
         }
-
     }
 
     public abstract E extractEntity(String[] info);
+
     @Override
     public E findOne(ID id) {
         return super.findOne(id);
@@ -49,41 +55,37 @@ public abstract class AbstractFileRepository<ID,E extends HasId<ID>> extends Abs
     public Iterable<E> findAll() {
         return super.findAll();
     }
+
     @Override
     public E save(E entity) throws ValidatorException {
-        try{
-            E e=super.save(entity);
-           // writeToFile(entity);
+        try {
+            E e = super.save(entity);
             writeAll();
             return e;
-        }
-        catch (IOException ex){
-            throw new RepositoryException("The file "+filename+" cannot be found!\n");
+        } catch (IOException ex) {
+            throw new RepositoryException("The file " + filename + " cannot be found!\n");
         }
     }
 
     @Override
     public E delete(ID id) {
-        try{
-            E e=super.delete(id);
+        try {
+            E e = super.delete(id);
             writeAll();
             return e;
-        }
-        catch (IOException ex){
-            throw new RepositoryException("The file "+filename+" cannot be found!\n");
+        } catch (IOException ex) {
+            throw new RepositoryException("The file " + filename + " cannot be found!\n");
         }
     }
 
     @Override
     public E update(E entity) {
-        try{
-            E e= super.update(entity);
+        try {
+            E e = super.update(entity);
             writeAll();
             return e;
-        }catch (IOException ex){
-            throw  new RepositoryException("The file "+filename+" cannot be found!\n");
+        } catch (IOException ex) {
+            throw new RepositoryException("The file " + filename + " cannot be found!\n");
         }
     }
-
-
 }

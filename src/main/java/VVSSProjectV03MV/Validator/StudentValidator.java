@@ -1,29 +1,33 @@
 package VVSSProjectV03MV.Validator;
+
 import VVSSProjectV03MV.Exceptions.ValidatorException;
 import VVSSProjectV03MV.Domain.Student;
 
 public class StudentValidator implements IValidator<Student> {
 
-    public void validate(Student s) throws ValidatorException {
-        String errors="";
-        if(s.getId().equals("")){
-            //throw new ValidatorException("Id invalid\n");
-            errors+="Id invalid\n";
+    public void validate(Student student) throws ValidatorException {
+        String errors = "";
+        if (student.getId() <= 0) {
+            errors += "Invalid ID\n";
         }
-        if(s.getNume().equals("") || s.getNume()==null){
-            //throw new ValidatorException("Nume invalid\n");
-            errors+="Nume invalid\n";
+        if (student.getName() == null
+                || student.getName().equals("")
+                || student.getName().matches(".*\\d.*")) {
+            errors += "Invalid name\n";
         }
-        if(s.getGrupa()<=0){
-            //throw new ValidatorException("Grupa invalida\n");
-            errors+="Grupa invalid\n";
+        if (student.getGroup() < 100 || student.getGroup() > 999) {
+            errors += "Invalid group\n";
         }
-        if(s.getEmail().equals("") || s.getEmail()==null){
-            //throw new ValidatorException("Email invalid\n");
-            errors+="Email invalid\n";
+        if (student.getEmail() == null || student.getEmail().equals("")) {
+            errors += "Invalid email\n";
         }
-        if (errors.length()!=0){
-            throw  new ValidatorException(errors);
+        if (student.getTeacher() == null
+                || student.getTeacher().equals("")
+                || student.getTeacher().matches(".*\\d.*")) {
+            errors += "Invalid teacher name\n";
+        }
+        if (errors.length() != 0) {
+            throw new ValidatorException(errors);
         }
     }
 }

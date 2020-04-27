@@ -1,7 +1,7 @@
 package VVSSProjectV03MV;
 
 import VVSSProjectV03MV.Exceptions.ValidatorException;
-import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepo;
+import VVSSProjectV03MV.Repository.XMLFileRepository.StudentXMLRepository;
 import VVSSProjectV03MV.Service.XMLFileService.StudentXMLService;
 import VVSSProjectV03MV.Validator.StudentValidator;
 import org.junit.Before;
@@ -13,13 +13,13 @@ import static org.junit.Assert.fail;
 public class TestAddStudent {
 
     private StudentValidator validator;
-    private StudentXMLRepo repository;
+    private StudentXMLRepository repository;
     private StudentXMLService service;
 
     @Before
     public void setup() {
         this.validator = new StudentValidator();
-        this.repository = new StudentXMLRepo(validator, "StudentiXML.xml");
+        this.repository = new StudentXMLRepository(validator, "StudentiXML.xml");
         this.service = new StudentXMLService(repository);
     }
 
@@ -57,7 +57,7 @@ public class TestAddStudent {
             this.service.add(new String[]{"1", "Alexandra", "935", "naie2377", "Andreea Vescan"});
             this.service.add(new String[]{"1", "Alexandru", "935", "naie2371", "Andreea Vescan"});
             fail("Method didn't throw when it was expected to");
-        } catch (ValidatorException exception) {
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
     }
